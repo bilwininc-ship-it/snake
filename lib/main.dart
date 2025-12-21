@@ -39,9 +39,14 @@ void main() async {
       supportedLocales: const [
         Locale('en'),
         Locale('tr'),
-        Locale('es'),
+        Locale('ar'),
+        Locale('zh'),
         Locale('de'),
+        Locale('es'),
         Locale('fr'),
+        Locale('ru'),
+        Locale('ja'),
+        Locale('pt'),
       ],
       path: 'assets/translations',
       fallbackLocale: const Locale('en'),
@@ -65,6 +70,15 @@ class SnakeEmpiresApp extends StatelessWidget {
         localizationsDelegates: context.localizationDelegates,
         supportedLocales: context.supportedLocales,
         locale: context.locale,
+        // RTL support for Arabic
+        builder: (context, child) {
+          final locale = context.locale;
+          final isRTL = AppConstants.rtlLanguages.contains(locale.languageCode);
+          return Directionality(
+            textDirection: isRTL ? TextDirection.rtl : TextDirection.ltr,
+            child: child!,
+          );
+        },
         home: const SplashScreen(),
       ),
     );

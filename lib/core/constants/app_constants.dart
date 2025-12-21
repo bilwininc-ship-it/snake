@@ -29,30 +29,40 @@
     '🐢',
   ];
   
-  // Supported Languages
-  static const List<String> supportedLanguages = [
-    'en',
-    'tr',
-    'es',
-    'de',
-    'fr',
-  ];
-  
-  // Language Names
-  static const Map<String, String> languageNames = {
+  // Supported Languages (10 dil)
+  static const Map<String, String> supportedLanguages = {
     'en': 'English',
     'tr': 'Türkçe',
-    'es': 'Español',
+    'ar': 'العربية',
+    'zh': '中文',
     'de': 'Deutsch',
+    'es': 'Español',
     'fr': 'Français',
+    'ru': 'Русский',
+    'ja': '日本語',
+    'pt': 'Português',
   };
   
   // Language Flags
   static const Map<String, String> languageFlags = {
     'en': '🇬🇧',
     'tr': '🇹🇷',
-    'es': '🇪🇸',
+    'ar': '🇸🇦',
+    'zh': '🇨🇳',
     'de': '🇩🇪',
+    'es': '🇪🇸',
     'fr': '🇫🇷',
+    'ru': '🇷🇺',
+    'ja': '🇯🇵',
+    'pt': '🇧🇷',
   };
+  
+  // RTL Languages
+  static const List<String> rtlLanguages = ['ar'];
+  
+  // Initial Player Stats
+  static const int initialGold = 100;
+  static const int initialGems = 10;
+  static const int initialLevel = 1;
+  static const int initialExperience = 0;
 }

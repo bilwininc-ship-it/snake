@@ -86,17 +86,22 @@ class WelcomeScreen extends StatelessWidget {
                         crossAxisCount: 2,
                         crossAxisSpacing: 16,
                         mainAxisSpacing: 16,
-                        childAspectRatio: 2.5,
+                        childAspectRatio: 2.2,
                       ),
                       itemCount: AppConstants.supportedLanguages.length,
                       itemBuilder: (context, index) {
                         final entry = AppConstants.supportedLanguages.entries.elementAt(index);
+                        final languageCode = entry.key;
+                        final languageName = entry.value;
+                        final flag = AppConstants.languageFlags[languageCode] ?? '';
+                        
                         return _LanguageCard(
-                          languageCode: entry.key,
-                          languageName: entry.value,
+                          languageCode: languageCode,
+                          languageName: languageName,
+                          flag: flag,
                           onTap: () {
-                            context.setLocale(Locale(entry.key));
-                            context.read<AuthBloc>().add(AuthSelectLanguage(entry.key));
+                            context.setLocale(Locale(languageCode));
+                            context.read<AuthBloc>().add(AuthSelectLanguage(languageCode));
                           },
                         );
                       },
@@ -116,11 +121,13 @@ class WelcomeScreen extends StatelessWidget {
 class _LanguageCard extends StatelessWidget {
   final String languageCode;
   final String languageName;
+  final String flag;
   final VoidCallback onTap;
 
   const _LanguageCard({
     required this.languageCode,
     required this.languageName,
+    required this.flag,
     required this.onTap,
   });
 
@@ -145,15 +152,26 @@ class _LanguageCard extends StatelessWidget {
               width: 1,
             ),
           ),
-          child: Center(
-            child: Text(
-              languageName,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                flag,
+                style: const TextStyle(fontSize: 24),
               ),
-            ),
+              const SizedBox(width: 8),
+              Flexible(
+                child: Text(
+                  languageName,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
           ),
         ),
       ),
