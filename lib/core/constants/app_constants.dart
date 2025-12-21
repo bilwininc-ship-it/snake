@@ -1,58 +1,40 @@
-﻿// Snake Empires - App Constants
-
-class AppConstants {
+﻿class AppConstants {
   // App Info
   static const String appName = 'Snake Empires';
   static const String appVersion = '1.0.0';
   
   // Storage Keys
-  static const String playerBox = 'player_data';
-  static const String settingsBox = 'settings_data';
-  static const String gameBox = 'game_data';
+  static const String keyIsFirstLaunch = 'is_first_launch';
+  static const String keyPlayerData = 'player_data';
+  static const String keySettings = 'settings';
+  static const String keyLanguage = 'language';
   
-  // Game Settings
-  static const double joystickRadius = 80.0;
-  static const double joystickKnobRadius = 30.0;
-  static const int maxSnakeLength = 100;
+  // Hive Box Names
+  static const String hiveBoxPlayer = 'player_box';
+  static const String hiveBoxSettings = 'settings_box';
   
-  // Languages
-  static const List<String> supportedLanguages = [
-    'en', 'tr', 'ar', 'zh', 'de', 'es', 'fr', 'ru', 'ja', 'pt'
+  // Validation
+  static const int minNameLength = 3;
+  static const int maxNameLength = 20;
+  
+  // Avatars
+  static const List<String> avatarList = [
+    '🐍',
+    '🐉',
+    '🦎',
+    '🐊',
+    '🦖',
+    '🐲',
+    '🦕',
+    '🐢',
   ];
   
-  static const Map<String, String> languageNames = {
-    'en': 'English',
-    'tr': 'Türkçe',
-    'ar': 'العربية',
-    'zh': '中文',
-    'de': 'Deutsch',
-    'es': 'Español',
-    'fr': 'Français',
-    'ru': 'Русский',
-    'ja': '日本語',
-    'pt': 'Português',
+  // Supported Languages
+  static const Map<String, String> supportedLanguages = {
+    'en': '🇬🇧 English',
+    'tr': '🇹🇷 Türkçe',
+    'es': '🇪🇸 Español',
+    'de': '🇩🇪 Deutsch',
+    'fr': '🇫🇷 Français',
   };
-  
-  static const Map<String, String> languageFlags = {
-    'en': '🇬🇧',
-    'tr': '🇹🇷',
-    'ar': '🇸🇦',
-    'zh': '🇨🇳',
-    'de': '🇩🇪',
-    'es': '🇪🇸',
-    'fr': '🇫🇷',
-    'ru': '🇷🇺',
-    'ja': '🇯🇵',
-    'pt': '🇧🇷',
-  };
-  
-  // Default Avatar List
-  static const List<String> avatarIds = [
-    'snake_green',
-    'snake_red',
-    'snake_blue',
-    'snake_yellow',
-    'snake_purple',
-    'snake_orange',
-  ];
 }

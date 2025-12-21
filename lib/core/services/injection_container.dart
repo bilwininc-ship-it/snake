@@ -1,1 +1,15 @@
-﻿import 'package:get_it/get_it.dart';\nimport 'package:hive_flutter/hive_flutter.dart';\nimport 'package:shared_preferences/shared_preferences.dart';\nimport '../../features/auth/data/models/player_model.dart';\nimport '../../features/auth/data/repositories/auth_repository_impl.dart';\nimport '../../features/auth/domain/repositories/auth_repository.dart';\nimport '../../features/auth/presentation/bloc/auth_bloc.dart';\n\nfinal sl = GetIt.instance;\n\nFuture<void> initDependencies() async {\n  // Initialize Hive\n  await Hive.initFlutter();\n  \n  // Register Hive Adapters\n  if (!Hive.isAdapterRegistered(0)) {\n    Hive.registerAdapter(PlayerModelAdapter());\n  }\n  \n  // Open Boxes\n  final playerBox = await Hive.openBox<PlayerModel>('player_data');\n  \n  // External\n  final sharedPreferences = await SharedPreferences.getInstance();\n  sl.registerLazySingleton(() => sharedPreferences);\n  sl.registerLazySingleton(() => playerBox);\n  \n  // Repository\n  sl.registerLazySingleton<AuthRepository>(\n    () => AuthRepositoryImpl(sl()),\n  );\n  \n  // BLoC\n  sl.registerFactory(() => AuthBloc(sl()));\n}\n
+﻿import 'package:get_it/get_it.dart';
+import 'package:snake_empires/features/auth/data/repositories/auth_repository.dart';
+import 'package:snake_empires/features/auth/presentation/bloc/auth_bloc.dart';
+
+final getIt = GetIt.instance;
+
+Future<void> setupDependencyInjection() async {
+  // Repositories
+  getIt.registerLazySingleton<AuthRepository>(() => AuthRepository());
+  
+  // BLoCs
+  getIt.registerFactory<AuthBloc>(
+    () => AuthBloc(authRepository: getIt<AuthRepository>()),
+  );
+}
