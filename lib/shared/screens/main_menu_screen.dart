@@ -3,9 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import '../../features/auth/presentation/bloc/auth_bloc.dart';
 import '../../features/auth/presentation/bloc/auth_event.dart';
-import '../../features/auth/presentation/bloc/auth_state.dart';
 import '../../features/auth/data/repositories/auth_repository.dart';
 import '../../core/services/injection_container.dart';
+import '../../core/services/audio_service.dart';
+import '../widgets/player_profile_card.dart';
+import '../widgets/menu_button.dart';
+import '../widgets/daily_quest_preview.dart';
+import '../widgets/notification_banner.dart';
 import 'settings_screen.dart';
 
 class MainMenuScreen extends StatefulWidget {
@@ -16,41 +20,99 @@ class MainMenuScreen extends StatefulWidget {
 }
 
 class _MainMenuScreenState extends State<MainMenuScreen>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
+    with TickerProviderStateMixin {
+  late AnimationController _fadeController;
+  late AnimationController _logoController;
+  late AnimationController _floatingController;
+  
   late Animation<double> _fadeAnimation;
+  late Animation<double> _logoScaleAnimation;
+  late Animation<double> _logoRotateAnimation;
+  late Animation<double> _floatingAnimation;
+  
+  final AudioService _audioService = AudioService();
+  bool _showNotification = true;
 
   @override
   void initState() {
     super.initState();
 
-    _controller = AnimationController(
+    // Initialize animations
+    _fadeController = AnimationController(
       duration: const Duration(milliseconds: 800),
       vsync: this,
     );
 
-    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeIn),
+    _logoController = AnimationController(
+      duration: const Duration(milliseconds: 1200),
+      vsync: this,
     );
 
-    _controller.forward();
+    _floatingController = AnimationController(
+      duration: const Duration(seconds: 3),
+      vsync: this,
+    )..repeat(reverse: true);
+
+    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _fadeController, curve: Curves.easeIn),
+    );
+
+    _logoScaleAnimation = Tween<double>(begin: 0.5, end: 1.0).animate(
+      CurvedAnimation(parent: _logoController, curve: Curves.elasticOut),
+    );
+
+    _logoRotateAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _logoController, curve: Curves.easeInOut),
+    );
+
+    _floatingAnimation = Tween<double>(begin: -10.0, end: 10.0).animate(
+      CurvedAnimation(parent: _floatingController, curve: Curves.easeInOut),
+    );
+
+    // Start animations
+    _fadeController.forward();
+    _logoController.forward();
     
-    // Load player data
-    _loadPlayerData();
+    // Load player data and initialize audio
+    _initializeApp();
   }
   
-  Future<void> _loadPlayerData() async {
+  Future<void> _initializeApp() async {
+    // Load player data
     final authRepo = getIt<AuthRepository>();
     final playerData = await authRepo.getPlayerData();
     
     if (playerData != null && mounted) {
       context.read<AuthBloc>().add(AuthLoadExistingUser());
     }
+
+    // Initialize audio service
+    await _audioService.initialize();
+    
+    // Start background music
+    if (mounted) {
+      await _audioService.playBackgroundMusic();
+    }
+
+    // Show welcome notification after delay
+    if (mounted) {
+      await Future.delayed(const Duration(milliseconds: 1500));
+      if (mounted && _showNotification) {
+        NotificationService.show(
+          context,
+          message: 'welcome_back'.tr(),
+          icon: Icons.celebration,
+          backgroundColor: Colors.deepPurple,
+        );
+      }
+    }
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _fadeController.dispose();
+    _logoController.dispose();
+    _floatingController.dispose();
     super.dispose();
   }
 
@@ -72,213 +134,147 @@ class _MainMenuScreenState extends State<MainMenuScreen>
         child: SafeArea(
           child: FadeTransition(
             opacity: _fadeAnimation,
-            child: Padding(
+            child: SingleChildScrollView(
               padding: const EdgeInsets.all(24.0),
               child: Column(
                 children: [
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 16),
+                  
                   // Player Profile Card
                   FutureBuilder(
                     future: getIt<AuthRepository>().getPlayerData(),
                     builder: (context, snapshot) {
                       if (snapshot.hasData && snapshot.data != null) {
-                        final player = snapshot.data!;
-                        return Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.all(20.0),
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                Colors.white.withOpacity(0.2),
-                                Colors.white.withOpacity(0.1),
-                              ],
-                            ),
-                            borderRadius: BorderRadius.circular(20),
-                            border: Border.all(
-                              color: Colors.white.withOpacity(0.3),
-                              width: 2,
-                            ),
-                          ),
-                          child: Row(
-                            children: [
-                              Container(
-                                width: 70,
-                                height: 70,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Colors.amber.withOpacity(0.3),
-                                  border: Border.all(
-                                    color: Colors.amber,
-                                    width: 3,
-                                  ),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    player.avatar,
-                                    style: const TextStyle(fontSize: 40),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 16),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      player.name,
-                                      style: const TextStyle(
-                                        fontSize: 22,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 4),
-                                    Row(
-                                      children: [
-                                        const Icon(
-                                          Icons.star,
-                                          size: 18,
-                                          color: Colors.amber,
-                                        ),
-                                        const SizedBox(width: 4),
-                                        Text(
-                                          '${'player_level'.tr()} ${player.level}',
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                            color: Colors.white.withOpacity(0.9),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Row(
-                                    children: [
-                                      const Icon(
-                                        Icons.monetization_on,
-                                        size: 18,
-                                        color: Colors.amber,
-                                      ),
-                                      const SizedBox(width: 4),
-                                      Text(
-                                        '${player.gold}',
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
-                                          fontSize: 16,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Row(
-                                    children: [
-                                      const Icon(
-                                        Icons.diamond,
-                                        size: 18,
-                                        color: Colors.cyan,
-                                      ),
-                                      const SizedBox(width: 4),
-                                      Text(
-                                        '${player.gems}',
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
-                                          fontSize: 16,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        );
+                        return PlayerProfileCard(player: snapshot.data!);
                       }
                       return const SizedBox.shrink();
                     },
                   ),
-                  const Spacer(),
-                  // Logo
-                  Container(
-                    width: 120,
-                    height: 120,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.white.withOpacity(0.2),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.purple.withOpacity(0.5),
-                          blurRadius: 30,
-                          spreadRadius: 10,
+                  
+                  const SizedBox(height: 24),
+                  
+                  // Daily Quest Preview
+                  const DailyQuestPreview(),
+                  
+                  const SizedBox(height: 32),
+                  
+                  // Logo with floating animation
+                  AnimatedBuilder(
+                    animation: _floatingAnimation,
+                    builder: (context, child) {
+                      return Transform.translate(
+                        offset: Offset(0, _floatingAnimation.value),
+                        child: child,
+                      );
+                    },
+                    child: ScaleTransition(
+                      scale: _logoScaleAnimation,
+                      child: RotationTransition(
+                        turns: _logoRotateAnimation,
+                        child: Container(
+                          width: 100,
+                          height: 100,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            gradient: RadialGradient(
+                              colors: [
+                                Colors.white.withOpacity(0.3),
+                                Colors.white.withOpacity(0.1),
+                              ],
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.purple.withOpacity(0.5),
+                                blurRadius: 30,
+                                spreadRadius: 10,
+                              ),
+                            ],
+                          ),
+                          child: const Center(
+                            child: Text(
+                              '🐍',
+                              style: TextStyle(fontSize: 60),
+                            ),
+                          ),
                         ),
-                      ],
-                    ),
-                    child: const Center(
-                      child: Text(
-                        '🐍',
-                        style: TextStyle(fontSize: 70),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 24),
-                  const Text(
-                    'SNAKE EMPIRES',
-                    style: TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      letterSpacing: 4,
+                  
+                  const SizedBox(height: 16),
+                  
+                  // Game Title
+                  ShaderMask(
+                    shaderCallback: (bounds) => const LinearGradient(
+                      colors: [Colors.amber, Colors.orange, Colors.amber],
+                    ).createShader(bounds),
+                    child: const Text(
+                      'SNAKE EMPIRES',
+                      style: TextStyle(
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        letterSpacing: 3,
+                      ),
                     ),
                   ),
-                  const Spacer(),
+                  
+                  const SizedBox(height: 32),
+                  
                   // Menu Buttons
-                  _MenuButton(
+                  MenuButton(
                     icon: Icons.play_arrow,
                     label: 'new_game'.tr(),
                     onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Game screen coming soon!'),
-                          backgroundColor: Colors.purple,
-                        ),
-                      );
+                      _showComingSoon('game_screen');
                     },
                   ),
-                  const SizedBox(height: 16),
-                  _MenuButton(
-                    icon: Icons.play_circle,
+                  
+                  const SizedBox(height: 12),
+                  
+                  MenuButton(
+                    icon: Icons.play_circle_outline,
                     label: 'continue_game'.tr(),
+                    isPrimary: false,
                     onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Continue game coming soon!'),
-                          backgroundColor: Colors.purple,
-                        ),
-                      );
+                      _showComingSoon('continue_game');
                     },
                   ),
-                  const SizedBox(height: 16),
-                  _MenuButton(
-                    icon: Icons.location_city,
-                    label: 'city'.tr(),
-                    onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('City screen coming soon!'),
-                          backgroundColor: Colors.purple,
+                  
+                  const SizedBox(height: 12),
+                  
+                  Row(
+                    children: [
+                      Expanded(
+                        child: MenuButton(
+                          icon: Icons.location_city,
+                          label: 'city'.tr(),
+                          isPrimary: false,
+                          onPressed: () {
+                            _showComingSoon('city_screen');
+                          },
                         ),
-                      );
-                    },
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: MenuButton(
+                          icon: Icons.emoji_events,
+                          label: 'quests'.tr(),
+                          isPrimary: false,
+                          onPressed: () {
+                            _showComingSoon('quests_screen');
+                          },
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 16),
-                  _MenuButton(
+                  
+                  const SizedBox(height: 12),
+                  
+                  MenuButton(
                     icon: Icons.settings,
                     label: 'settings'.tr(),
+                    isPrimary: false,
                     onPressed: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
@@ -287,7 +283,19 @@ class _MainMenuScreenState extends State<MainMenuScreen>
                       );
                     },
                   ),
+                  
                   const SizedBox(height: 24),
+                  
+                  // Version info
+                  Text(
+                    'version_1_0_0'.tr(),
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.white.withOpacity(0.5),
+                    ),
+                  ),
+                  
+                  const SizedBox(height: 16),
                 ],
               ),
             ),
@@ -296,49 +304,13 @@ class _MainMenuScreenState extends State<MainMenuScreen>
       ),
     );
   }
-}
 
-class _MenuButton extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final VoidCallback onPressed;
-
-  const _MenuButton({
-    required this.icon,
-    required this.label,
-    required this.onPressed,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      height: 60,
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.amber,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-          elevation: 8,
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon, color: Colors.black87, size: 28),
-            const SizedBox(width: 12),
-            Text(
-              label,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.black87,
-              ),
-            ),
-          ],
-        ),
-      ),
+  void _showComingSoon(String feature) {
+    NotificationService.show(
+      context,
+      message: '${'coming_soon'.tr()}: ${feature.tr()}',
+      icon: Icons.access_time,
+      backgroundColor: Colors.orange,
     );
   }
 }
