@@ -30,7 +30,34 @@
   ];
   
   // Supported Languages (10 dil)
+  static const List<String> supportedLanguagesList = [
+    'en',
+    'tr',
+    'ar',
+    'zh',
+    'de',
+    'es',
+    'fr',
+    'ru',
+    'ja',
+    'pt',
+  ];
+  
   static const Map<String, String> supportedLanguages = {
+    'en': 'English',
+    'tr': 'Türkçe',
+    'ar': 'العربية',
+    'zh': '中文',
+    'de': 'Deutsch',
+    'es': 'Español',
+    'fr': 'Français',
+    'ru': 'Русский',
+    'ja': '日本語',
+    'pt': 'Português',
+  };
+  
+  // Language names for display
+  static const Map<String, String> languageNames = {
     'en': 'English',
     'tr': 'Türkçe',
     'ar': 'العربية',
