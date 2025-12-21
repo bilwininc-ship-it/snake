@@ -1,0 +1,981 @@
+================================================================================
+SNAKE EMPIRES - YAPILACAK BÖLÜMLER LİSTESİ
+Agent'lara GitHub Projesi Paylaşılacak - Her Agent Bir Bölüm Yapacak
+================================================================================
+
+PROJE LİNKİ: [GitHub repo linkiniz]
+README.md: Projede mevcut - Tüm detaylar orada
+KLASÖR YAPISI: Hazır - Agent sadece kod yazacak
+
+================================================================================
+NOT: Her agent'a şu şekilde talimat verin:
+"GitHub'daki Snake Empires projesini klonla. README.md'yi oku. 
+BÖLÜM X: [Bölüm Adı] - Bu bölümü tamamen kodla ve çalıştır."
+================================================================================
+
+📱 BÖLÜM 1: GİRİŞ VE KAYIT SİSTEMİ (Authentication)
+--------------------------------------------------------------------------------
+YAPILACAKLAR:
+✓ Splash Screen (açılış animasyonu)
+✓ İlk açılış kontrolü
+✓ Dil seçimi ekranı (10 dil)
+✓ Oyuncu ismi girişi
+✓ Avatar seçimi
+✓ Local kayıt sistemi (Hive)
+✓ Guest olarak giriş
+✓ Firebase Authentication hazırlığı (Google/Apple Sign-In için)
+
+DOSYALAR:
+- lib/features/auth/presentation/screens/splash_screen.dart
+- lib/features/auth/presentation/screens/welcome_screen.dart
+- lib/features/auth/presentation/screens/name_input_screen.dart
+- lib/features/auth/presentation/screens/avatar_selection_screen.dart
+- lib/features/auth/data/repositories/auth_repository.dart
+- lib/features/auth/domain/usecases/create_player.dart
+- lib/features/auth/presentation/bloc/auth_bloc.dart
+
+ÇIKTILAR:
+- Kullanıcı ilk kez uygulamayı açtığında dil seçimi yapabilmeli
+- İsim ve avatar seçip oyuna başlayabilmeli
+- Kayıt bilgileri güvenli şekilde Hive'a kaydedilmeli
+
+
+📱 BÖLÜM 2: ANA MENÜ VE DASHBOARD
+--------------------------------------------------------------------------------
+YAPILACAKLAR:
+✓ Ana menü ekranı (animasyonlu)
+✓ Oyuncu profil kartı (isim, seviye, avatar)
+✓ Menü butonları (Yeni Oyun, Devam Et, Şehir, Ayarlar)
+✓ Daily Quest önizlemesi
+✓ Günlük ödül sistemi UI
+✓ Bildirim sistemi (yeni özellikler, güncellemeler)
+✓ Arka plan müziği başlatma
+
+DOSYALAR:
+- lib/shared/screens/main_menu_screen.dart
+- lib/shared/widgets/player_profile_card.dart
+- lib/shared/widgets/menu_button.dart
+- lib/shared/widgets/daily_quest_preview.dart
+- lib/shared/widgets/notification_banner.dart
+- lib/core/services/audio_service.dart
+
+ÇIKTILAR:
+- Profesyonel görünümlü ana menü
+- Tüm butonlar çalışır olmalı
+- Müzik açma/kapama ayarı
+
+
+📱 BÖLÜM 3: AYARLAR EKRANI (Settings)
+--------------------------------------------------------------------------------
+YAPILACAKLAR:
+✓ Ayarlar ekranı UI
+✓ Dil değiştirme (10 dil arası geçiş)
+✓ Ses efektleri açma/kapama + slider
+✓ Müzik açma/kapama + slider
+✓ Titreşim ayarı
+✓ Bildirim ayarları
+✓ Hesap yönetimi (isim değiştir, avatar değiştir)
+✓ Oyun verilerini sil butonu
+✓ Hakkında/Credits ekranı
+
+DOSYALAR:
+- lib/shared/screens/settings_screen.dart
+- lib/shared/widgets/setting_tile.dart
+- lib/shared/widgets/audio_slider.dart
+- lib/shared/screens/about_screen.dart
+- lib/core/services/settings_service.dart
+
+ÇIKTILAR:
+- Tüm ayarlar çalışır olmalı
+- Ayarlar Hive'a kaydedilmeli
+- Dil değişince tüm uygulama güncellenme
+
+
+📱 BÖLÜM 4: TUTORIAL SİSTEMİ (İlk Oyun Rehberi)
+--------------------------------------------------------------------------------
+YAPILACAKLAR:
+✓ İlk oyun tutorial'ı (step-by-step)
+✓ Joystick kullanımı öğretimi
+✓ Düşmanı yenme öğretimi
+✓ Loot toplama öğretimi
+✓ Tutorial overlay (karartma + highlight)
+✓ Tutorial skip butonu
+✓ Tutorial tamamlama ödülü
+✓ Tutorial tekrar oynatma seçeneği (ayarlardan)
+
+DOSYALAR:
+- lib/features/tutorial/presentation/screens/tutorial_screen.dart
+- lib/features/tutorial/presentation/widgets/tutorial_overlay.dart
+- lib/features/tutorial/presentation/widgets/tutorial_step.dart
+- lib/features/tutorial/domain/entities/tutorial_step_data.dart
+- lib/features/tutorial/data/tutorial_steps.dart
+
+ÇIKTILAR:
+- Yeni oyuncu tutorial'ı görmeli
+- Tutorial atlanabilir olmalı
+- Tutorial bitince ödül verilmeli
+
+
+📱 BÖLÜM 5: YILAN KONTROL SİSTEMİ (Dual Joystick + Hareket)
+--------------------------------------------------------------------------------
+YAPILACAKLAR:
+✓ Sol joystick (360° hareket)
+✓ Sağ joystick (saldırı yönü)
+✓ Yılan smooth hareketi
+✓ Segment takip sistemi (snake trail)
+✓ Hız ayarı (joystick mesafesine göre)
+✓ Duvar çarpma kontrolü
+✓ Hareket sınırlayıcıları (anti-cheat)
+✓ Mobil titreşim feedback
+
+DOSYALAR:
+- lib/features/snake_game/presentation/game/snake_game.dart
+- lib/features/snake_game/presentation/components/dual_joystick.dart
+- lib/features/snake_game/presentation/game/entities/snake_player.dart
+- lib/features/snake_game/presentation/game/entities/snake_segment.dart
+- lib/features/snake_game/presentation/game/systems/movement_system.dart
+
+ÇIKTILAR:
+- Yılan joystick ile hareket edebilmeli
+- Hareket akıcı olmalı
+- Segmentler yılanı takip etmeli
+
+
+📱 BÖLÜM 6: ÇARPIŞMA SİSTEMİ (Collision Detection)
+--------------------------------------------------------------------------------
+YAPILACAKLAR:
+✓ Hitbox sistemi (yılan, düşman, duvar, loot)
+✓ Collision callbacks
+✓ Hasar hesaplama
+✓ Knockback efekti
+✓ Invincibility frames (hasardan sonra geçici bağışıklık)
+✓ Collision debug görünümü (test için)
+✓ Performans optimizasyonu (spatial partitioning)
+
+DOSYALAR:
+- lib/features/snake_game/presentation/game/systems/collision_system.dart
+- lib/features/snake_game/presentation/game/components/hitbox_component.dart
+- lib/features/snake_game/presentation/game/utils/spatial_grid.dart
+
+ÇIKTILAR:
+- Yılan düşmana çarpınca hasar almalı
+- Duvar çarpma çalışmalı
+- Loot toplama çalışmalı
+
+
+📱 BÖLÜM 7: DÜŞMAN SİSTEMİ (Enemy AI + Spawning)
+--------------------------------------------------------------------------------
+YAPILACAKLAR:
+✓ Temel düşman AI (Patrol, Chase, Attack)
+✓ 5 farklı düşman tipi (Easy, Medium, Hard, Elite, Boss)
+✓ Düşman spawn sistemi
+✓ Wave/dalga sistemi
+✓ Düşman animasyonları
+✓ Düşman sağlık barı
+✓ Düşman öldürme efekti
+✓ Boss mekaniği
+
+DOSYALAR:
+- lib/features/snake_game/presentation/game/entities/enemy_base.dart
+- lib/features/snake_game/presentation/game/entities/enemy_types.dart
+- lib/features/snake_game/presentation/game/ai/enemy_ai.dart
+- lib/features/snake_game/presentation/game/systems/spawn_system.dart
+- lib/features/snake_game/presentation/game/systems/wave_system.dart
+
+ÇIKTILAR:
+- Düşmanlar spawn olmalı
+- AI çalışmalı (takip, saldırı)
+- Öldürüldüğünde loot drop olmalı
+
+
+📱 BÖLÜM 8: LOOT SİSTEMİ (Item Drop + Pickup)
+--------------------------------------------------------------------------------
+YAPILACAKLAR:
+✓ Loot drop mekaniği
+✓ Rarity sistemi (Common, Uncommon, Rare, Epic, Legendary)
+✓ Loot otomatik toplama / manuel toplama
+✓ Loot animasyonu (parlama, yükselme)
+✓ Loot magnetize efekti (oyuncuya doğru çekilme)
+✓ Drop table sistemi
+✓ Loot UI göstergesi
+✓ Parçalara göre farklı lootlar
+
+DOSYALAR:
+- lib/features/snake_game/presentation/game/entities/loot_item.dart
+- lib/features/snake_game/presentation/game/systems/loot_system.dart
+- lib/features/snake_game/data/models/loot_table.dart
+- lib/features/snake_game/domain/entities/item.dart
+
+ÇIKTILAR:
+- Düşman öldüğünde loot düşmeli
+- Loot toplanabilir olmalı
+- Rarity'e göre renk ve efekt farklı olmalı
+
+
+📱 BÖLÜM 9: ENVANTER SİSTEMİ (Inventory)
+--------------------------------------------------------------------------------
+YAPILACAKLAR:
+✓ Envanter UI (grid layout)
+✓ Item slot sistemi
+✓ Drag & drop (sürükle bırak)
+✓ Item stacking (aynı itemler üst üste)
+✓ Item kullanma
+✓ Item silme/atma
+✓ Item bilgi paneli (stats, description)
+✓ Envanter filtreleme (Tümü, Parçalar, Consumables)
+✓ Envanter sıralama (Rarity, Tip, İsim)
+
+DOSYALAR:
+- lib/features/rpg_system/presentation/screens/inventory_screen.dart
+- lib/features/rpg_system/presentation/widgets/inventory_grid.dart
+- lib/features/rpg_system/presentation/widgets/inventory_slot.dart
+- lib/features/rpg_system/domain/entities/inventory.dart
+- lib/features/rpg_system/domain/usecases/use_item.dart
+
+ÇIKTILAR:
+- Envanter açılabilir olmalı
+- Itemler görünmeli
+- Kullanma/atma çalışmalı
+
+
+📱 BÖLÜM 10: YILAN GELİŞTİRME SİSTEMİ (Snake Upgrade)
+--------------------------------------------------------------------------------
+YAPILACAKLAR:
+✓ Modüler parça sistemi (Kafa, Gövde, Kuyruk)
+✓ Her parça ayrı upgrade edilebilir
+✓ Upgrade ağacı UI
+✓ Stat gösterimi (Attack, Defense, Speed)
+✓ Upgrade maliyeti hesaplama
+✓ Upgrade animasyonu
+✓ Unlock edilebilir özel yetenekler
+✓ Parça görsel değişimi (seviye arttıkça)
+
+DOSYALAR:
+- lib/features/rpg_system/presentation/screens/upgrade_screen.dart
+- lib/features/rpg_system/presentation/widgets/upgrade_tree.dart
+- lib/features/rpg_system/presentation/widgets/part_upgrade_card.dart
+- lib/features/rpg_system/domain/entities/snake_part.dart
+- lib/features/rpg_system/domain/usecases/upgrade_snake_part.dart
+
+ÇIKTILAR:
+- Upgrade ekranı açılmalı
+- Parçalar upgrade edilebilmeli
+- Statlar güncellenm eli
+
+
+📱 BÖLÜM 11: YETENEK SİSTEMİ (Skills & Abilities)
+--------------------------------------------------------------------------------
+YAPILACAKLAR:
+✓ 3 aktif yetenek slotu
+✓ 5 pasif yetenek slotu
+✓ Yetenek ağacı (skill tree)
+✓ Cooldown sistemi
+✓ Mana/Enerji sistemi
+✓ Yetenek animasyonları
+✓ Combo sistemi
+✓ Ultimate yetenek
+
+DOSYALAR:
+- lib/features/rpg_system/presentation/screens/skills_screen.dart
+- lib/features/rpg_system/domain/entities/skill.dart
+- lib/features/rpg_system/domain/entities/skill_tree.dart
+- lib/features/rpg_system/presentation/game/systems/skill_system.dart
+
+ÇIKTILAR:
+- Yetenekler kullanılabilmeli
+- Cooldown çalışmalı
+- Skill tree görünebilmeli
+
+
+📱 BÖLÜM 12: HARİTA SİSTEMİ (Tiled Map Integration)
+--------------------------------------------------------------------------------
+YAPILACAKLAR:
+✓ Tiled harita yükleme (.tmx dosyaları)
+✓ Collision layer
+✓ Spawn points
+✓ Secret areas (gizli alanlar)
+✓ Parallax background (katmanlı arka plan)
+✓ 5 farklı harita biome (Orman, Çöl, Kar, Volkan, Karanlık)
+✓ Minimap sistemi
+✓ Fog of war (keşfedilmemiş alanlar karanlık)
+
+DOSYALAR:
+- lib/features/snake_game/presentation/game/map/map_manager.dart
+- lib/features/snake_game/presentation/game/map/tiled_loader.dart
+- lib/features/snake_game/presentation/game/ui/minimap.dart
+- assets/levels/maps/*.tmx
+
+ÇIKTILAR:
+- Haritalar yüklenmeli
+- Collision çalışmalı
+- Minimap görünmeli
+
+
+📱 BÖLÜM 13: TÜNEL VE GİZLİ ALANLAR (Tunnel System)
+--------------------------------------------------------------------------------
+YAPILACAKLAR:
+✓ Yeraltı tünelleri
+✓ Tünel giriş/çıkış
+✓ Teleport animasyonu
+✓ Kilitli tüneller (anahtar gerekli)
+✓ Gizli hazine odaları
+✓ Boss odaları
+✓ Trap sistemi (tuzaklar)
+
+DOSYALAR:
+- lib/features/snake_game/presentation/game/map/tunnel_system.dart
+- lib/features/snake_game/presentation/game/entities/tunnel_entrance.dart
+- lib/features/snake_game/presentation/game/entities/secret_room.dart
+
+ÇIKTILAR:
+- Tünellere girilebilmeli
+- Teleport çalışmalı
+- Gizli odalar keşfedilebilmeli
+
+
+📱 BÖLÜM 14: QUEST SİSTEMİ (Görev Sistemi)
+--------------------------------------------------------------------------------
+YAPILACAKLAR:
+✓ Daily quests (günlük görevler)
+✓ Main quests (ana hikaye)
+✓ Side quests (yan görevler)
+✓ Quest takip UI
+✓ Quest ödülleri
+✓ Achievement sistemi
+✓ Quest notification
+✓ Quest log (görev geçmişi)
+
+DOSYALAR:
+- lib/features/rpg_system/presentation/screens/quest_screen.dart
+- lib/features/rpg_system/domain/entities/quest.dart
+- lib/features/rpg_system/data/quest_data.dart
+- lib/features/rpg_system/presentation/widgets/quest_card.dart
+
+ÇIKTILAR:
+- Questler görünmeli
+- Tamamlanınca ödül verilmeli
+- Daily quest yenilenmeli
+
+
+📱 BÖLÜM 15: ŞEHİR KURMA - TEMEL (City Building Core)
+--------------------------------------------------------------------------------
+YAPILACAKLAR:
+✓ Şehir grid sistemi
+✓ Bina yerleştirme (drag & place)
+✓ Bina rotasyonu
+✓ Bina önizlemesi (yeşil/kırmızı)
+✓ Şehir kaynakları (Yemek, Altın, Nüfus)
+✓ Kaynak üretimi
+✓ Kaynak depolama
+✓ Şehir seviyesi
+
+DOSYALAR:
+- lib/features/city_building/presentation/screens/city_screen.dart
+- lib/features/city_building/presentation/widgets/city_grid.dart
+- lib/features/city_building/domain/entities/city.dart
+- lib/features/city_building/domain/entities/building.dart
+
+ÇIKTILAR:
+- Şehir görünümü açılmalı
+- Binalar yerleştirilebilmeli
+- Kaynaklar üretilmeli
+
+
+📱 BÖLÜM 16: ŞEHİR BİNALARI (Buildings)
+--------------------------------------------------------------------------------
+YAPILACAKLAR:
+✓ Farm (Yemek üretimi)
+✓ Mine (Altın üretimi)
+✓ Hatchery (Yavru yılan üretimi)
+✓ Storage (Depo)
+✓ Defense Tower (Savunma kulesi)
+✓ Research Lab (Araştırma)
+✓ Hospital (Can yenileme)
+✓ Market (Alışveriş)
+✓ Her binanın 5 seviyesi
+✓ Bina upgrade sistemi
+
+DOSYALAR:
+- lib/features/city_building/domain/entities/farm.dart
+- lib/features/city_building/domain/entities/mine.dart
+- lib/features/city_building/domain/entities/hatchery.dart
+- lib/features/city_building/presentation/widgets/building_card.dart
+
+ÇIKTILAR:
+- Tüm binalar yapılabilmeli
+- Upgrade çalışmalı
+- Üretim aktif olmalı
+
+
+📱 BÖLÜM 17: YAVRU YILAN SİSTEMİ (Baby Snake System)
+--------------------------------------------------------------------------------
+YAPILACAKLAR:
+✓ Hatchery'den yavru yılan spawn
+✓ Yavru yılan yetiştirme
+✓ Beslenme sistemi (food consumption)
+✓ Büyüme aşamaları (Baby → Young → Adult)
+✓ Yavru özellik atama (random stats)
+✓ Yavru satma/serbest bırakma
+✓ Breeding sistemi (iki yılan çiftleştir)
+
+DOSYALAR:
+- lib/features/city_building/domain/entities/baby_snake.dart
+- lib/features/city_building/presentation/widgets/baby_snake_card.dart
+- lib/features/city_building/domain/usecases/breed_snakes.dart
+
+ÇIKTILAR:
+- Yavrular spawn olmalı
+- Büyümeli
+- Özellikleri görünmeli
+
+
+📱 BÖLÜM 18: ARAŞTIRMA SİSTEMİ (Research/Tech Tree)
+--------------------------------------------------------------------------------
+YAPILACAKLAR:
+✓ Teknoloji ağacı
+✓ Araştırma başlatma
+✓ Araştırma süresi (timer)
+✓ Araştırma maliyeti
+✓ Unlock edilebilir özellikler
+✓ Pasif bonuslar
+✓ Araştırma sırası
+
+DOSYALAR:
+- lib/features/city_building/presentation/screens/research_screen.dart
+- lib/features/city_building/domain/entities/research.dart
+- lib/features/city_building/presentation/widgets/tech_tree.dart
+
+ÇIKTILAR:
+- Araştırma ekranı açılmalı
+- Timer çalışmalı
+- Bonuslar aktif olmalı
+
+
+📱 BÖLÜM 19: OYUN İÇİ UI (Game HUD)
+--------------------------------------------------------------------------------
+YAPILACAKLAR:
+✓ Sağlık barı
+✓ Mana/Enerji barı
+✓ Skor göstergesi
+✓ Seviye göstergesi
+✓ XP barı
+✓ Kaynak sayaçları (Altın, Elmas)
+✓ Yetenek cooldown göstergesi
+✓ Minimap
+✓ Pause butonu
+✓ FPS sayacı (debug)
+
+DOSYALAR:
+- lib/features/snake_game/presentation/game/ui/game_hud.dart
+- lib/features/snake_game/presentation/game/ui/health_bar.dart
+- lib/features/snake_game/presentation/game/ui/resource_counter.dart
+
+ÇIKTILAR:
+- HUD görünmeli
+- Bilgiler güncel olmalı
+- Butonlar çalışmalı
+
+
+📱 BÖLÜM 20: PAUSE MENÜ VE OYUN BİTİŞİ
+--------------------------------------------------------------------------------
+YAPILACAKLAR:
+✓ Pause menüsü
+✓ Devam et, Ana Menü, Ayarlar butonları
+✓ Game Over ekranı
+✓ Victory ekranı
+✓ Skor özeti
+✓ Ödül gösterimi
+✓ Restart butonu
+✓ Sosyal paylaşım butonları (hazırlık)
+
+DOSYALAR:
+- lib/features/snake_game/presentation/game/ui/pause_menu.dart
+- lib/features/snake_game/presentation/screens/game_over_screen.dart
+- lib/features/snake_game/presentation/screens/victory_screen.dart
+
+ÇIKTILAR:
+- Pause menü çalışmalı
+- Game over görünmeli
+- Restart çalışmalı
+
+
+📱 BÖLÜM 21: SES VE MÜZİK SİSTEMİ (Audio)
+--------------------------------------------------------------------------------
+YAPILACAKLAR:
+✓ Arka plan müziği (loop)
+✓ Ses efektleri (saldırı, hasar, loot, menu)
+✓ Ses mixer (volumes)
+✓ Fade in/out
+✓ Müzik geçişleri (bölümler arası)
+✓ 3D spatial audio (düşman sesinin mesafeye göre)
+✓ Ayarlardan ses kontrolü
+
+DOSYALAR:
+- lib/core/services/audio_service.dart
+- lib/core/services/sound_manager.dart
+- assets/audio/music/*.mp3
+- assets/audio/sfx/*.wav
+
+ÇIKTILAR:
+- Müzik çalmalı
+- Ses efektleri duyulmalı
+- Ayarlardan kontrol edilmeli
+
+
+📱 BÖLÜM 22: PARTİKÜL EFEKTLERİ (Visual Effects)
+--------------------------------------------------------------------------------
+YAPILACAKLAR:
+✓ Hasar efekti (kan, vuruş)
+✓ Ölüm efekti (patlama, dağılma)
+✓ Loot efekti (parlama)
+✓ Level up efekti
+✓ Yetenek efektleri
+✓ Hareket izi (trail)
+✓ Çevre efektleri (yaprak, kar, toz)
+✓ Screen shake (sarsıntı)
+
+DOSYALAR:
+- lib/features/snake_game/presentation/game/effects/particle_system.dart
+- lib/features/snake_game/presentation/game/effects/damage_effect.dart
+- lib/features/snake_game/presentation/game/effects/screen_shake.dart
+
+ÇIKTILAR:
+- Efektler görünmeli
+- Performanslı olmalı
+- Ayarlardan kapatılabilir olmalı
+
+
+📱 BÖLÜM 23: SAVE/LOAD SİSTEMİ (Kayıt/Yükleme)
+--------------------------------------------------------------------------------
+YAPILACAKLAR:
+✓ Manuel kayıt
+✓ Otomatik kayıt (auto-save her 30 saniye)
+✓ Çoklu save slot (3 slot)
+✓ Save preview (tarih, seviye, süre)
+✓ Cloud save hazırlığı (Firebase)
+✓ Save file encryption (şifreleme)
+✓ Backup sistemi
+✓ Bozuk save tespiti
+
+DOSYALAR:
+- lib/core/services/save_service.dart
+- lib/core/services/auto_save_service.dart
+- lib/shared/screens/save_slot_screen.dart
+
+ÇIKTILAR:
+- Kayıt çalışmalı
+- Yükleme çalışmalı
+- Şifreli olmalı
+
+
+📱 BÖLÜM 24: BAŞARI SİSTEMİ (Achievements)
+--------------------------------------------------------------------------------
+YAPILACAKLAR:
+✓ Achievement sistemi
+✓ 50+ başarım
+✓ Gizli başarımlar
+✓ Başarım notification
+✓ Başarım ödülleri
+✓ Başarım progress barı
+✓ Steam/Google Play Games entegrasyonu hazırlığı
+✓ Başarım galeri ekranı
+
+DOSYALAR:
+- lib/features/achievements/presentation/screens/achievements_screen.dart
+- lib/features/achievements/domain/entities/achievement.dart
+- lib/features/achievements/data/achievements_data.dart
+
+ÇIKTILAR:
+- Başarımlar unlock olmalı
+- Notification görünmeli
+- Ödüller verilmeli
+
+
+📱 BÖLÜM 25: LEADERBOARD (Lider Tablosu)
+--------------------------------------------------------------------------------
+YAPILACAKLAR:
+✓ Local leaderboard
+✓ Skor gönderme
+✓ Top 100 listesi
+✓ Günlük/Haftalık/Tüm Zamanlar
+✓ Arkadaş listesi sıralaması
+✓ Firebase Leaderboard hazırlığı
+✓ Oyuncu profil görüntüleme
+
+DOSYALAR:
+- lib/features/leaderboard/presentation/screens/leaderboard_screen.dart
+- lib/features/leaderboard/domain/entities/leaderboard_entry.dart
+- lib/features/leaderboard/data/repositories/leaderboard_repository.dart
+
+ÇIKTILAR:
+- Sıralama görünmeli
+- Skor kaydedilmeli
+- Filtreleme çalışmalı
+
+
+📱 BÖLÜM 26: GÜNLÜK ÖDÜL SİSTEMİ (Daily Rewards)
+--------------------------------------------------------------------------------
+YAPILACAKLAR:
+✓ Günlük giriş ödülü
+✓ 7 günlük takvim
+✓ Ardışık gün bonusu
+✓ Haftalık mega ödül
+✓ Claim butonu
+✓ Countdown timer (sonraki ödüle kalan süre)
+✓ Ödül animasyonu
+✓ Push notification (günlük ödül hatırlatma)
+
+DOSYALAR:
+- lib/features/rewards/presentation/screens/daily_reward_screen.dart
+- lib/features/rewards/domain/entities/daily_reward.dart
+- lib/features/rewards/data/reward_calendar.dart
+
+ÇIKTILAR:
+- Takvim görünmeli
+- Ödül alınabilir olmalı
+- Timer çalışmalı
+
+
+📱 BÖLÜM 27: ADMOB REKLAM SİSTEMİ
+--------------------------------------------------------------------------------
+YAPILACAKLAR:
+✓ Banner reklamlar (ana menüde)
+✓ Interstitial reklamlar (seviye arası)
+✓ Rewarded video (ödül karşılığı)
+✓ Reklam yükleme mantığı
+✓ Reklam timing (her 3 seviyede bir)
+✓ Rewarded ad butonları (2x coin, extra life)
+✓ No ads IAP kontrolü
+✓ Test reklamlar ve production ayarı
+
+DOSYALAR:
+- lib/features/monetization/data/services/ad_service.dart
+- lib/features/monetization/presentation/widgets/rewarded_ad_button.dart
+- lib/features/monetization/data/ad_ids.dart
+
+ÇIKTILAR:
+- Reklamlar görünmeli
+- Rewarded ads ödül vermeli
+- IAP ile kapatılabilir olmalı
+
+
+📱 BÖLÜM 28: UYGULAMA İÇİ SATIN ALMA (IAP)
+--------------------------------------------------------------------------------
+YAPILACAKLAR:
+✓ Mağaza ekranı (shop)
+✓ Elmas paketleri (100, 500, 1000, 5000)
+✓ Starter pack
+✓ VIP pass (aylık)
+✓ Remove ads (reklamları kaldır)
+✓ Satın alma flow
+✓ Receipt validation
+✓ Restore purchases
+✓ Fiyat localization
+
+DOSYALAR:
+- lib/features/monetization/data/services/iap_service.dart
+- lib/features/monetization/presentation/screens/shop_screen.dart
+- lib/features/monetization/presentation/widgets/product_card.dart
+- lib/features/monetization/data/product_ids.dart
+
+ÇIKTILAR:
+- Mağaza açılmalı
+- Satın alma çalışmalı
+- Ürünler teslim edilmeli
+
+
+📱 BÖLÜM 29: FİREBASE ENTEGRASYONU (Analytics + Crashlytics)
+--------------------------------------------------------------------------------
+YAPILACAKLAR:
+✓ Firebase başlatma
+✓ Analytics event tracking
+✓ Custom events (level_complete, boss_defeated, vb.)
+✓ User properties
+✓ Crashlytics entegrasyonu
+✓ Crash raporlama
+✓ Non-fatal error logging
+✓ Remote Config hazırlığı
+
+DOSYALAR:
+- lib/core/services/analytics_service.dart
+- lib/core/services/crashlytics_service.dart
+- lib/core/services/firebase_service.dart
+
+ÇIKTILAR:
+- Analytics çalışmalı
+- Crashler raporlanmalı
+- Firebase console'da görülmeli
+
+
+📱 BÖLÜM 30: PERFORMANS OPTİMİZASYONU
+--------------------------------------------------------------------------------
+YAPILACAKLAR:
+✓ Object pooling (mermi, efekt, düşman)
+✓ Viewport culling (ekran dışındaki nesneleri durdur)
+✓ Sprite batching
+✓ Memory optimization
+✓ Frame rate limiter (60 FPS)
+✓ Loading screen
+✓ Asset preloading
+✓ Profiling ve optimization
+
+DOSYALAR:
+- lib/core/utils/object_pool.dart
+- lib/features/snake_game/presentation/game/systems/culling_system.dart
+- lib/core/services/performance_monitor.dart
+- lib/shared/screens/loading_screen.dart
+
+ÇIKTILAR:
+- FPS stabil 60 olmalı
+- Memory leak olmamalı
+- Yükleme hızlı olmalı
+
+
+📱 BÖLÜM 31: DEBUG ARAÇLARI (Development Tools)
+--------------------------------------------------------------------------------
+YAPILACAKLAR:
+✓ Debug overlay (FPS, entity count, memory)
+✓ God mode (ölümsüzlük - test için)
+✓ Cheat menu (kaynak ekleme, level atlama)
+✓ Collision visualizer
+✓ Performance grafiği
+✓ Log viewer
+✓ Test menüsü
+✓ Debug mode açma/kapama
+
+DOSYALAR:
+- lib/core/debug/debug_overlay.dart
+- lib/core/debug/cheat_menu.dart
+- lib/core/debug/collision_visualizer.dart
+
+ÇIKTILAR:
+- Debug modda araçlar görünmeli
+- Release'de kapalı olmalı
+- Test kolaylaşmalı
+
+
+📱 BÖLÜM 32: GÜVENLİK SİSTEMİ (Anti-Cheat)
+--------------------------------------------------------------------------------
+YAPILACAKLAR:
+✓ Veri şifreleme (encrypt)
+✓ Save file signature
+✓ Checksum validation
+✓ Root/Jailbreak detection
+✓ Memory editor protection
+✓ Speed hack detection
+✓ Value validation (anti-cheat)
+✓ Secure API calls
+
+DOSYALAR:
+- lib/core/services/secure_storage_service.dart
+- lib/core/services/anti_cheat_service.dart
+- lib/core/services/device_security_check.dart
+- lib/core/utils/encryption_utils.dart
+
+ÇIKTILAR:
+- Veriler şifreli kaydedilmeli
+- Root tespiti çalışmalı
+- Cheat engellenmeli
+
+
+📱 BÖLÜM 33: PUSH BİLDİRİMLER (Notifications)
+--------------------------------------------------------------------------------
+YAPILACAKLAR:
+✓ Local notification (günlük ödül, energy dolu)
+✓ Scheduled notifications
+✓ Push notification hazırlığı (Firebase)
+✓ Notification ayarları
+✓ Deep linking (notification'dan oyuna dönüş)
+✓ Notification görselleri
+✓ Bildirim sesleri
+
+DOSYALAR:
+- lib/core/services/notification_service.dart
+- lib/features/notifications/data/notification_scheduler.dart
+
+ÇIKTILAR:
+- Bildirimler gelmeli
+- Ayarlardan kapatılabilir olmalı
+- Deep link çalışmalı
+
+
+📱 BÖLÜM 34: SOSYAL ÖZELLIKLER (Social)
+--------------------------------------------------------------------------------
+YAPILACAKLAR:
+✓ Arkadaş ekleme sistemi (hazırlık)
+✓ Profil paylaşma
+✓ Skor paylaşma (screenshot)
+✓ Social share butonları
+✓ Invite friends
+✓ Referral sistemi hazırlığı
+✓ Community features hazırlığı
+
+DOSYALAR:
+- lib/features/social/presentation/screens/friends_screen.dart
+- lib/features/social/domain/entities/friend.dart
+- lib/core/services/share_service.dart
+
+ÇIKTILAR:
+- Paylaşım çalışmalı
+- Screenshot alınmalı
+- Sosyal butonlar hazır olmalı
+
+
+📱 BÖLÜM 35: ÖZEL ETKINLIKLER (Events)
+--------------------------------------------------------------------------------
+YAPILACAKLAR:
+✓ Özel etkinlik sistemi
+✓ Seasonal events (Noel, Halloween, vb.)
+✓ Event takvimi
+✓ Event quest'leri
+✓ Event ödülleri
+✓ Limited time offers
+✓ Event banner'ları
+✓ Event countdown
+
+DOSYALAR:
+- lib/features/events/presentation/screens/event_screen.dart
+- lib/features/events/domain/entities/event.dart
+- lib/features/events/data/event_calendar.dart
+
+ÇIKTILAR:
+- Event sistemi çalışmalı
+- Banner görünmeli
+- Quest'ler tamamlanabilir olmalı
+
+
+📱 BÖLÜM 36: BATTLE PASS SİSTEMİ
+--------------------------------------------------------------------------------
+YAPILACAKLAR:
+✓ Battle pass UI
+✓ Free tier / Premium tier
+✓ 50 seviye ödül sistemi
+✓ XP kazanma
+✓ Seviye atlama
+✓ Unlock animasyonu
+✓ Season sistemi
+✓ Battle pass satın alma
+
+DOSYALAR:
+- lib/features/battle_pass/presentation/screens/battle_pass_screen.dart
+- lib/features/battle_pass/domain/entities/battle_pass.dart
+- lib/features/battle_pass/domain/entities/battle_pass_tier.dart
+
+ÇIKTILAR:
+- Battle pass görünmeli
+- XP kazanılmalı
+- Ödüller unlock olmalı
+
+
+📱 BÖLÜM 37: BOSS SAVAŞLARI (Boss Fights)
+--------------------------------------------------------------------------------
+YAPILACAKLAR:
+✓ 10 unique boss
+✓ Boss AI (aşama bazlı saldırılar)
+✓ Boss health bar
+✓ Boss arena sistemi
+✓ Boss loot (garantili epic/legendary)
+✓ Boss müziği
+✓ Boss intro/outro cinematic
+✓ Boss achievement'ları
+
+DOSYALAR:
+- lib/features/snake_game/presentation/game/entities/boss_base.dart
+- lib/features/snake_game/presentation/game/ai/boss_ai.dart
+- lib/features/snake_game/presentation/screens/boss_arena_screen.dart
+
+ÇIKTILAR:
+- Boss spawn olmalı
+- AI çalışmalı
+- Özel loot düşmeli
+
+
+📱 BÖLÜM 38: PVP HAZIRLIĞI (Multiplayer Foundation)
+--------------------------------------------------------------------------------
+YAPILACAKLAR:
+✓ PvP arena UI hazırlığı
+✓ Matchmaking sistemi taslağı
+✓ Player vs Player mekanik hazırlığı
+✓ Ranking sistemi
+✓ PvP rewards
+✓ Replay system hazırlığı
+✓ Spectator mode hazırlığı
+
+DOSYALAR:
+- lib/features/pvp/presentation/screens/pvp_screen.dart
+- lib/features/pvp/domain/entities/match.dart
+- lib/features/pvp/data/matchmaking_service.dart
+
+ÇIKTILAR:
+- UI hazır olmalı
+- Sistemler taslak halinde olmalı
+- Gelecekteki entegrasyon için hazır
+
+
+📱 BÖLÜM 39: GÖRSELLER VE ANIMASYONLAR
+--------------------------------------------------------------------------------
+YAPILACAKLAR:
+✓ Sprite sheet'ler
+✓ Yılan animasyonları (hareket, saldırı, hasar)
+✓ Düşman animasyonları
+✓ UI animasyonları (button press, panel slide)
+✓ Transition animasyonları (ekran geçişleri)
+✓ Loading animations
+✓ Particle systems
+✓ Background parallax
+
+DOSYALAR:
+- assets/images/* (tüm görseller)
+- lib/core/animations/animation_controller.dart
+- lib/shared/widgets/animated_widgets.dart
+
+ÇIKTILAR:
+- Tüm görseller olmalı
+- Animasyonlar akıcı olmalı
+- UI hareketli olmalı
+
+
+📱 BÖLÜM 40: FINAL POLISH VE TEST
+--------------------------------------------------------------------------------
+YAPILACAKLAR:
+✓ Bug fixing
+✓ Balance ayarları (düşman zorluğu, drop rate)
+✓ UI/UX iyileştirmeleri
+✓ Performans testleri
+✓ Crash testleri
+✓ Memory leak kontrolü
+✓ Farklı cihaz testleri
+✓ Beta testing hazırlığı
+✓ Store listing hazırlığı (screenshots, açıklama)
+✓ Privacy policy ve Terms of Service
+
+DOSYALAR:
+- TESTING.md
+- BALANCE_CONFIG.md
+- PRIVACY_POLICY.md
+- TERMS_OF_SERVICE.md
+
+ÇIKTILAR:
+- Oyun stabil olmalı
+- Tüm özellikler test edilmiş olmalı
+- Store'a yüklenmeye hazır
+
+
+================================================================================
+TOPLAM: 40 BÖLÜM
+Tahmini Süre: 40-50 agent (bazı bölümler 2 agent gerektirebilir)
+================================================================================
+
+KULLANIM ŞEKLİ:
+1. Her agent'a GitHub repo linkini verin
+2. "BÖLÜM X: [İsim] - Bu bölümü yap" deyin
+3. Agent README.md'yi okuyacak ve o bölümü tamamlayacak
+4. Her bölüm bağımsız çalışabilir
+
+================================================================================
+ÖNEMLİ NOTLAR:
+- Her bölüm diğerinden bağımsız geliştirilebilir
+- Bazı bölümler önce yapılmalı (1-8 öncelikli)
+- Test bölümleri (31, 40) sona bırakılabilir
+- Monetizasyon bölümleri (27-28) sonradan eklenebilir
+================================================================================
