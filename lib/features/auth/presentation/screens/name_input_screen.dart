@@ -5,7 +5,7 @@ import 'package:snake_empires/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:snake_empires/features/auth/presentation/bloc/auth_event.dart';
 import 'package:snake_empires/features/auth/presentation/bloc/auth_state.dart';
 import 'package:snake_empires/features/auth/presentation/screens/avatar_selection_screen.dart';
-import 'package:snake_empires/core/services/localization_service.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class NameInputScreen extends StatefulWidget {
   final String language;
@@ -75,7 +75,7 @@ class _NameInputScreenState extends State<NameInputScreen> {
                     ),
                     const Spacer(),
                     Text(
-                      LocalizationService.translate(context, 'enter_name'),
+                      'enter_name'.tr(),
                       style: const TextStyle(
                         fontSize: 32,
                         fontWeight: FontWeight.bold,
@@ -102,7 +102,7 @@ class _NameInputScreenState extends State<NameInputScreen> {
                           fontWeight: FontWeight.w600,
                         ),
                         decoration: InputDecoration(
-                          hintText: LocalizationService.translate(context, 'name_hint'),
+                          hintText: 'name_hint'.tr(),
                           hintStyle: TextStyle(
                             color: Colors.grey.shade400,
                             fontSize: 18,
@@ -123,10 +123,10 @@ class _NameInputScreenState extends State<NameInputScreen> {
                         ),
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
-                            return LocalizationService.translate(context, 'name_required');
+                            return 'name_required'.tr();
                           }
                           if (value.trim().length < AppConstants.minNameLength) {
-                            return LocalizationService.translate(context, 'name_too_short');
+                            return 'name_too_short'.tr();
                           }
                           return null;
                         },
@@ -161,7 +161,7 @@ class _NameInputScreenState extends State<NameInputScreen> {
                           elevation: 8,
                         ),
                         child: Text(
-                          LocalizationService.translate(context, 'continue'),
+                          'continue'.tr(),
                           style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,

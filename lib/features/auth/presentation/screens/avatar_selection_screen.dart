@@ -5,7 +5,7 @@ import 'package:snake_empires/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:snake_empires/features/auth/presentation/bloc/auth_event.dart';
 import 'package:snake_empires/features/auth/presentation/bloc/auth_state.dart';
 import 'package:snake_empires/shared/screens/main_menu_screen.dart';
-import 'package:snake_empires/core/services/localization_service.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class AvatarSelectionScreen extends StatefulWidget {
   final String language;
@@ -74,7 +74,7 @@ class _AvatarSelectionScreenState extends State<AvatarSelectionScreen> {
                   ),
                   const SizedBox(height: 20),
                   Text(
-                    LocalizationService.translate(context, 'select_avatar'),
+                    'select_avatar'.tr(),
                     style: const TextStyle(
                       fontSize: 32,
                       fontWeight: FontWeight.bold,
@@ -159,7 +159,7 @@ class _AvatarSelectionScreenState extends State<AvatarSelectionScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            LocalizationService.translate(context, 'start_adventure'),
+                            'start_adventure'.tr(),
                             style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,

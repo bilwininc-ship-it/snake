@@ -5,7 +5,7 @@ import 'package:snake_empires/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:snake_empires/features/auth/presentation/bloc/auth_event.dart';
 import 'package:snake_empires/features/auth/presentation/bloc/auth_state.dart';
 import 'package:snake_empires/features/auth/presentation/screens/name_input_screen.dart';
-import 'package:snake_empires/core/services/localization_service.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
@@ -61,7 +61,7 @@ class WelcomeScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 30),
                   Text(
-                    LocalizationService.translate(context, 'welcome'),
+                    'welcome'.tr(),
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                       fontSize: 28,
@@ -71,7 +71,7 @@ class WelcomeScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 50),
                   Text(
-                    LocalizationService.translate(context, 'select_language'),
+                    'select_language'.tr(),
                     style: TextStyle(
                       fontSize: 18,
                       color: Colors.white.withOpacity(0.9),
@@ -95,7 +95,7 @@ class WelcomeScreen extends StatelessWidget {
                           languageCode: entry.key,
                           languageName: entry.value,
                           onTap: () {
-                            LocalizationService.setLocale(context, entry.key);
+                            context.setLocale(Locale(entry.key));
                             context.read<AuthBloc>().add(AuthSelectLanguage(entry.key));
                           },
                         );

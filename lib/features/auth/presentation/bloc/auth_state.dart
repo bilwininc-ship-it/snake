@@ -51,6 +51,15 @@ class AuthCompleted extends AuthState {
   List<Object?> get props => [playerData];
 }
 
+class Authenticated extends AuthState {
+  final PlayerData player;
+  
+  const Authenticated(this.player);
+  
+  @override
+  List<Object?> get props => [player];
+}
+
 class AuthError extends AuthState {
   final String message;
   

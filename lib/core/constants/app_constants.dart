@@ -30,11 +30,29 @@
   ];
   
   // Supported Languages
-  static const Map<String, String> supportedLanguages = {
-    'en': '🇬🇧 English',
-    'tr': '🇹🇷 Türkçe',
-    'es': '🇪🇸 Español',
-    'de': '🇩🇪 Deutsch',
-    'fr': '🇫🇷 Français',
+  static const List<String> supportedLanguages = [
+    'en',
+    'tr',
+    'es',
+    'de',
+    'fr',
+  ];
+  
+  // Language Names
+  static const Map<String, String> languageNames = {
+    'en': 'English',
+    'tr': 'Türkçe',
+    'es': 'Español',
+    'de': 'Deutsch',
+    'fr': 'Français',
+  };
+  
+  // Language Flags
+  static const Map<String, String> languageFlags = {
+    'en': '🇬🇧',
+    'tr': '🇹🇷',
+    'es': '🇪🇸',
+    'de': '🇩🇪',
+    'fr': '🇫🇷',
   };
 }

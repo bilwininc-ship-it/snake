@@ -22,13 +22,17 @@ class PlayerDataAdapter extends TypeAdapter<PlayerData> {
       language: fields[2] as String,
       createdAt: fields[3] as DateTime,
       isFirstLaunch: fields[4] as bool,
+      level: fields[5] as int,
+      gold: fields[6] as int,
+      gems: fields[7] as int,
+      experience: fields[8] as int,
     );
   }
 
   @override
   void write(BinaryWriter writer, PlayerData obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
@@ -38,7 +42,15 @@ class PlayerDataAdapter extends TypeAdapter<PlayerData> {
       ..writeByte(3)
       ..write(obj.createdAt)
       ..writeByte(4)
-      ..write(obj.isFirstLaunch);
+      ..write(obj.isFirstLaunch)
+      ..writeByte(5)
+      ..write(obj.level)
+      ..writeByte(6)
+      ..write(obj.gold)
+      ..writeByte(7)
+      ..write(obj.gems)
+      ..writeByte(8)
+      ..write(obj.experience);
   }
 
   @override

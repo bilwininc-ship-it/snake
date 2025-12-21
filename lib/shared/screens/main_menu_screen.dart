@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import '../../features/auth/presentation/bloc/auth_bloc.dart';
+import '../../features/auth/presentation/bloc/auth_event.dart';
 import '../../features/auth/presentation/bloc/auth_state.dart';
+import '../../features/auth/data/repositories/auth_repository.dart';
+import '../../core/services/injection_container.dart';
 import 'settings_screen.dart';
 
 class MainMenuScreen extends StatefulWidget {
@@ -31,6 +34,18 @@ class _MainMenuScreenState extends State<MainMenuScreen>
     );
 
     _controller.forward();
+    
+    // Load player data
+    _loadPlayerData();
+  }
+  
+  Future<void> _loadPlayerData() async {
+    final authRepo = getIt<AuthRepository>();
+    final playerData = await authRepo.getPlayerData();
+    
+    if (playerData != null && mounted) {
+      context.read<AuthBloc>().add(AuthLoadExistingUser());
+    }
   }
 
   @override
@@ -48,8 +63,9 @@ class _MainMenuScreenState extends State<MainMenuScreen>
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              Theme.of(context).colorScheme.primary.withOpacity(0.3),
-              Theme.of(context).colorScheme.secondary.withOpacity(0.3),
+              Colors.purple.shade900,
+              Colors.deepPurple.shade800,
+              Colors.indigo.shade900,
             ],
           ),
         ),
@@ -62,97 +78,124 @@ class _MainMenuScreenState extends State<MainMenuScreen>
                 children: [
                   const SizedBox(height: 24),
                   // Player Profile Card
-                  BlocBuilder<AuthBloc, AuthState>(
-                    builder: (context, state) {
-                      if (state is Authenticated) {
-                        final player = state.player;
-                        return Card(
-                          child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Row(
-                              children: [
-                                CircleAvatar(
-                                  radius: 32,
-                                  backgroundColor:
-                                      Theme.of(context).colorScheme.primary,
-                                  child: const Icon(
-                                    Icons.token,
-                                    size: 32,
-                                    color: Colors.white,
+                  FutureBuilder(
+                    future: getIt<AuthRepository>().getPlayerData(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData && snapshot.data != null) {
+                        final player = snapshot.data!;
+                        return Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(20.0),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                Colors.white.withOpacity(0.2),
+                                Colors.white.withOpacity(0.1),
+                              ],
+                            ),
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              color: Colors.white.withOpacity(0.3),
+                              width: 2,
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 70,
+                                height: 70,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.amber.withOpacity(0.3),
+                                  border: Border.all(
+                                    color: Colors.amber,
+                                    width: 3,
                                   ),
                                 ),
-                                const SizedBox(width: 16),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        player.name,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headlineMedium,
-                                      ),
-                                      const SizedBox(height: 4),
-                                      Row(
-                                        children: [
-                                          Icon(
-                                            Icons.star,
-                                            size: 16,
-                                            color: Colors.amber,
-                                          ),
-                                          const SizedBox(width: 4),
-                                          Text(
-                                            '${'player_level'.tr()} ${player.level}',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyMedium,
-                                          ),
-                                        ],
-                                      ),
-                                    ],
+                                child: Center(
+                                  child: Text(
+                                    player.avatar,
+                                    style: const TextStyle(fontSize: 40),
                                   ),
                                 ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
+                              ),
+                              const SizedBox(width: 16),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Row(
-                                      children: [
-                                        Icon(
-                                          Icons.monetization_on,
-                                          size: 16,
-                                          color: Colors.amber,
-                                        ),
-                                        const SizedBox(width: 4),
-                                        Text(
-                                          '${player.gold}',
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ],
+                                    Text(
+                                      player.name,
+                                      style: const TextStyle(
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
                                     ),
                                     const SizedBox(height: 4),
                                     Row(
                                       children: [
-                                        Icon(
-                                          Icons.diamond,
-                                          size: 16,
-                                          color: Colors.blue,
+                                        const Icon(
+                                          Icons.star,
+                                          size: 18,
+                                          color: Colors.amber,
                                         ),
                                         const SizedBox(width: 4),
                                         Text(
-                                          '${player.gems}',
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
+                                          '${'player_level'.tr()} ${player.level}',
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.white.withOpacity(0.9),
                                           ),
                                         ),
                                       ],
                                     ),
                                   ],
                                 ),
-                              ],
-                            ),
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.monetization_on,
+                                        size: 18,
+                                        color: Colors.amber,
+                                      ),
+                                      const SizedBox(width: 4),
+                                      Text(
+                                        '${player.gold}',
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.diamond,
+                                        size: 18,
+                                        color: Colors.cyan,
+                                      ),
+                                      const SizedBox(width: 4),
+                                      Text(
+                                        '${player.gems}',
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
                         );
                       }
@@ -161,15 +204,36 @@ class _MainMenuScreenState extends State<MainMenuScreen>
                   ),
                   const Spacer(),
                   // Logo
-                  Icon(
-                    Icons.token,
-                    size: 120,
-                    color: Theme.of(context).colorScheme.primary,
+                  Container(
+                    width: 120,
+                    height: 120,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white.withOpacity(0.2),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.purple.withOpacity(0.5),
+                          blurRadius: 30,
+                          spreadRadius: 10,
+                        ),
+                      ],
+                    ),
+                    child: const Center(
+                      child: Text(
+                        '🐍',
+                        style: TextStyle(fontSize: 70),
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 24),
-                  Text(
-                    'Snake Empires',
-                    style: Theme.of(context).textTheme.displayLarge,
+                  const Text(
+                    'SNAKE EMPIRES',
+                    style: TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      letterSpacing: 4,
+                    ),
                   ),
                   const Spacer(),
                   // Menu Buttons
@@ -177,10 +241,10 @@ class _MainMenuScreenState extends State<MainMenuScreen>
                     icon: Icons.play_arrow,
                     label: 'new_game'.tr(),
                     onPressed: () {
-                      // TODO: Navigate to game
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
+                        SnackBar(
                           content: Text('Game screen coming soon!'),
+                          backgroundColor: Colors.purple,
                         ),
                       );
                     },
@@ -190,10 +254,10 @@ class _MainMenuScreenState extends State<MainMenuScreen>
                     icon: Icons.play_circle,
                     label: 'continue_game'.tr(),
                     onPressed: () {
-                      // TODO: Continue game
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
+                        SnackBar(
                           content: Text('Continue game coming soon!'),
+                          backgroundColor: Colors.purple,
                         ),
                       );
                     },
@@ -203,10 +267,10 @@ class _MainMenuScreenState extends State<MainMenuScreen>
                     icon: Icons.location_city,
                     label: 'city'.tr(),
                     onPressed: () {
-                      // TODO: Navigate to city
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
+                        SnackBar(
                           content: Text('City screen coming soon!'),
+                          backgroundColor: Colors.purple,
                         ),
                       );
                     },
@@ -249,19 +313,28 @@ class _MenuButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
+      height: 60,
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          padding: const EdgeInsets.symmetric(vertical: 20),
+          backgroundColor: Colors.amber,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          elevation: 8,
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon),
+            Icon(icon, color: Colors.black87, size: 28),
             const SizedBox(width: 12),
             Text(
               label,
-              style: const TextStyle(fontSize: 18),
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
+              ),
             ),
           ],
         ),
