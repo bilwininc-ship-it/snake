@@ -1,21 +1,58 @@
-﻿class AppConstants {
-  // Hive Box İsimleri
-  static const String gameDataBox = 'game_data';
-  static const String playerDataBox = 'player_data';
-  static const String cityDataBox = 'city_data';
+﻿// Snake Empires - App Constants
+
+class AppConstants {
+  // App Info
+  static const String appName = 'Snake Empires';
+  static const String appVersion = '1.0.0';
   
-  // Oyun Ayarları
-  static const double baseSpeed = 150.0;
+  // Storage Keys
+  static const String playerBox = 'player_data';
+  static const String settingsBox = 'settings_data';
+  static const String gameBox = 'game_data';
+  
+  // Game Settings
+  static const double joystickRadius = 80.0;
+  static const double joystickKnobRadius = 30.0;
   static const int maxSnakeLength = 100;
-  static const int startingSegments = 5;
   
-  // Harita Ayarları
-  static const int tileSize = 16;
-  static const String defaultMap = 'level_1.tmx';
+  // Languages
+  static const List<String> supportedLanguages = [
+    'en', 'tr', 'ar', 'zh', 'de', 'es', 'fr', 'ru', 'ja', 'pt'
+  ];
   
-  // Monetization
-  static const String adMobAppIdAndroid = 'ca-app-pub-3940256099942544~3347511713';
-  static const String adMobAppIdIOS = 'ca-app-pub-3940256099942544~1458002511';
-  static const String rewardedAdIdAndroid = 'ca-app-pub-3940256099942544/5224354917';
-  static const String rewardedAdIdIOS = 'ca-app-pub-3940256099942544/1712485313';
+  static const Map<String, String> languageNames = {
+    'en': 'English',
+    'tr': 'Türkçe',
+    'ar': 'العربية',
+    'zh': '中文',
+    'de': 'Deutsch',
+    'es': 'Español',
+    'fr': 'Français',
+    'ru': 'Русский',
+    'ja': '日本語',
+    'pt': 'Português',
+  };
+  
+  static const Map<String, String> languageFlags = {
+    'en': '🇬🇧',
+    'tr': '🇹🇷',
+    'ar': '🇸🇦',
+    'zh': '🇨🇳',
+    'de': '🇩🇪',
+    'es': '🇪🇸',
+    'fr': '🇫🇷',
+    'ru': '🇷🇺',
+    'ja': '🇯🇵',
+    'pt': '🇧🇷',
+  };
+  
+  // Default Avatar List
+  static const List<String> avatarIds = [
+    'snake_green',
+    'snake_red',
+    'snake_blue',
+    'snake_yellow',
+    'snake_purple',
+    'snake_orange',
+  ];
 }
