@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'dart:ui' as ui; // TextDirection çakışmasını önlemek için
 
 import 'core/services/injection_container.dart';
 import 'core/constants/app_constants.dart';
@@ -28,11 +29,14 @@ void main() async {
   // Setup Dependency Injection
   await setupDependencyInjection();
   
-  // Set preferred orientations (for game)
+  // Set preferred orientations (Landscape for game)
   await SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown,
+    DeviceOrientation.landscapeLeft,
+    DeviceOrientation.landscapeRight,
   ]);
+  
+  // Hide system UI for immersive experience
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
   
   runApp(
     EasyLocalization(
@@ -75,7 +79,7 @@ class SnakeEmpiresApp extends StatelessWidget {
           final locale = context.locale;
           final isRTL = AppConstants.rtlLanguages.contains(locale.languageCode);
           return Directionality(
-            textDirection: isRTL ? TextDirection.rtl : TextDirection.ltr,
+            textDirection: isRTL ? ui.TextDirection.rtl : ui.TextDirection.ltr,
             child: child!,
           );
         },
