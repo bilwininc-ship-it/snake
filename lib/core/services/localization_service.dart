@@ -5,13 +5,12 @@ class LocalizationService {
   static final Map<String, Map<String, String>> _localizedStrings = {};
   static String _currentLocale = 'en';
 
-  static Future<void> load(String languageCode) async {
+  static Future<void> load(BuildContext context, String languageCode) async {
     _currentLocale = languageCode;
     
     // Load from assets
-    final String jsonString = await DefaultAssetBundle.of(
-      _currentLocale == 'en' ? const Key('en') as BuildContext : const Key(_currentLocale) as BuildContext
-    ).loadString('assets/translations/$languageCode.json');
+    final String jsonString = await DefaultAssetBundle.of(context)
+        .loadString('assets/translations/$languageCode.json');
     
     final Map<String, dynamic> jsonMap = json.decode(jsonString);
     _localizedStrings[languageCode] = jsonMap.map((key, value) => MapEntry(key, value.toString()));
