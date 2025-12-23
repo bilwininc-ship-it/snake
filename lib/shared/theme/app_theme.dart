@@ -48,7 +48,7 @@ class AppTheme {
       ),
       
       // Card Theme
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         color: cardColor,
         elevation: 4,
         shape: RoundedRectangleBorder(
@@ -147,9 +147,9 @@ class AppTheme {
       // Slider Theme
       sliderTheme: SliderThemeData(
         activeTrackColor: secondaryColor,
-        inactiveTrackColor: secondaryColor.withOpacity(0.3),
+        inactiveTrackColor: secondaryColor.withValues(alpha: 0.3),
         thumbColor: secondaryColor,
-        overlayColor: secondaryColor.withOpacity(0.2),
+        overlayColor: secondaryColor.withValues(alpha: 0.2),
         valueIndicatorColor: secondaryColor,
         valueIndicatorTextStyle: const TextStyle(
           color: Colors.black87,
@@ -167,14 +167,14 @@ class AppTheme {
         }),
         trackColor: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.selected)) {
-            return secondaryColor.withOpacity(0.5);
+            return secondaryColor.withValues(alpha: 0.5);
           }
-          return Colors.grey.withOpacity(0.3);
+          return Colors.grey.withValues(alpha: 0.3);
         }),
       ),
       
       // Dialog Theme
-      dialogTheme: DialogTheme(
+      dialogTheme: DialogThemeData(
         backgroundColor: surfaceColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
@@ -192,7 +192,7 @@ class AppTheme {
       
       // Divider Theme
       dividerTheme: DividerThemeData(
-        color: textSecondary.withOpacity(0.2),
+        color: textSecondary.withValues(alpha: 0.2),
         thickness: 1,
         space: 1,
       ),
@@ -207,7 +207,7 @@ class AppTheme {
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: textSecondary.withOpacity(0.3)),
+          borderSide: BorderSide(color: textSecondary.withValues(alpha: 0.3)),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
@@ -218,7 +218,7 @@ class AppTheme {
           borderSide: const BorderSide(color: errorColor),
         ),
         labelStyle: const TextStyle(color: textSecondary),
-        hintStyle: TextStyle(color: textSecondary.withOpacity(0.6)),
+        hintStyle: TextStyle(color: textSecondary.withValues(alpha: 0.6)),
       ),
     );
   }

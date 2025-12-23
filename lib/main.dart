@@ -10,7 +10,6 @@ import 'features/auth/data/models/player_data.dart';
 import 'features/auth/presentation/bloc/auth_bloc.dart';
 import 'features/auth/presentation/screens/splash_screen.dart';
 import 'shared/theme/app_theme.dart';
-import 'core/services/audio_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

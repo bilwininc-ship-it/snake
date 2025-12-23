@@ -49,13 +49,13 @@ class _DailyQuestPreviewState extends State<DailyQuestPreview>
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              Colors.deepPurple.withOpacity(0.3),
-              Colors.purple.withOpacity(0.2),
+              Colors.deepPurple.withValues(alpha: 0.3),
+              Colors.purple.withValues(alpha: 0.2),
             ],
           ),
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: Colors.purple.withOpacity(0.5),
+            color: Colors.purple.withValues(alpha: 0.5),
             width: 2,
           ),
         ),
@@ -67,7 +67,7 @@ class _DailyQuestPreviewState extends State<DailyQuestPreview>
                 Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: Colors.purple.withOpacity(0.3),
+                    color: Colors.purple.withValues(alpha: 0.3),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: const Icon(
@@ -179,7 +179,7 @@ class _QuestItem extends StatelessWidget {
               Container(
                 height: 4,
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.2),
+                  color: Colors.white.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(2),
                 ),
                 child: FractionallySizedBox(
@@ -205,7 +205,7 @@ class _QuestItem extends StatelessWidget {
             color: isCompleted ? Colors.green : Colors.white70,
           ),
         ),
-        if (isCompleted) ..[
+        if (isCompleted) ...[
           const SizedBox(width: 4),
           const Icon(
             Icons.check_circle,
