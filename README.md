@@ -1216,3 +1216,7 @@ Katkılarınızı bekliyoruz! Lütfen şu adımları izleyin:
 ---
 
 Made with ❤️ by Snake Empires Team
+
+
+
+flutter run -d chrome
